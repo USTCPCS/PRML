@@ -17,6 +17,9 @@ class BayesianRegressor(Regressor):
         self.w_precision = None
 
     def _fit(self, X, t):
+        """
+        Get the posterior distribution P(w | t, X, alpha, beta)
+        """
         if self.w_mean is not None:
             mean_prev = self.w_mean
         else:
