@@ -154,17 +154,11 @@ class Gaussian(RandomVariable):
         mu_is_gaussian = isinstance(self.mu, Gaussian)
         tau_is_gamma = isinstance(self.tau, Gamma)
         if mu_is_gaussian and not tau_is_gamma:
-            mu = np.mean(X, 0)
-            tau = self.mu.tau + N * self.tau
-            self.mu = Gaussian(
-                mu=(self.mu.mu * self.mu.tau + N * mu * self.tau) / tau,
-                tau=tau
-            )
+            # 12/21/2017 ewan
+            self._bayes_mu(X)
         elif not mu_is_gaussian and tau_is_gamma:
-            var = np.var(X, axis=0)
-            a = self.tau.a + 0.5 * N
-            b = self.tau.b + 0.5 * N * var
-            self.tau = Gamma(a, b)
+            # 12/21/2017 ewan
+            self._bayes_tau(X)
         elif mu_is_gaussian and tau_is_gamma:
             raise NotImplementedError
         else:

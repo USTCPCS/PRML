@@ -72,6 +72,7 @@ class Bernoulli(RandomVariable):
             self._ml(X)
 
     def _ml(self, X):
+        # maximize likelihood
         n_zeros = np.count_nonzero((X == 0).astype(np.int))
         n_ones = np.count_nonzero((X == 1).astype(np.int))
         assert X.size == n_zeros + n_ones, (
@@ -80,7 +81,8 @@ class Bernoulli(RandomVariable):
         self.mu = np.mean(X, axis=0)
 
     def _map(self, X):
-        assert isinstance(self.mu, Beta)
+        # maximize posterior
+        assert isinstance(self.mu, Beta) # conjugate prior
         assert X.shape[1:] == self.mu.shape
         n_ones = (X == 1).sum(axis=0)
         n_zeros = (X == 0).sum(axis=0)
