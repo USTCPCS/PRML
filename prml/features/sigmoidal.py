@@ -35,6 +35,8 @@ class SigmoidalFeatures(object):
         self.coef = coef
 
     def _sigmoid(self, x, mean):
+        # tanh(a) = 2 * sigmoid(2a) - 1
+        # a = (x - mean) * coef
         return np.tanh((x - mean) @ self.coef * 0.5) * 0.5 + 0.5
 
     def transform(self, x):
